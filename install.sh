@@ -5,7 +5,7 @@
 #   sh install.sh <TV_IP> "com.netflix.ninja,com.google.android.youtube.tv"
 #   sh install.sh <TV_IP> "" "bluetooth,sound,picture"   adds settings shortcuts by the clock
 #
-# Uses out/tvhome.apk if you built it, otherwise downloads the latest release.
+# Uses out/tvhome.apk, building it first if needed.
 set -e
 cd "$(dirname "$0")"
 
@@ -34,9 +34,9 @@ esac
 
 APK=out/tvhome.apk
 if [ ! -f "$APK" ]; then
-  APK=$(mktemp -d)/tvhome.apk
-  echo "Downloading the home screen…"
-  curl -fsSL -o "$APK" https://github.com/Ansub/tv-detox/releases/latest/download/tvhome.apk
+  # This fork has no prebuilt release: the original project's release lacks its features.
+  echo "Building the home screen…"
+  sh build.sh || { echo "Build failed. See \"For developers: build it yourself\" in the README." >&2; exit 1; }
 fi
 
 echo "Installing… If your TV shows a Google Play Protect message, follow it on the TV to allow the install."

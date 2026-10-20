@@ -1,0 +1,5 @@
+com.netflix.ninja 1113
+in.startv.hotstar 2125
+com.google.android.youtube.tv 1192
+com.amazon.amazonvideo.livingroom 1177
+com.sonyliv 2174

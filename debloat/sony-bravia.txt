@@ -1,0 +1,31 @@
+# Apps safe to turn off on a Sony BRAVIA with Google TV (tested on a 2023 KD-43X75L, Google TV 14).
+# Turned off, not deleted: undo.sh turns them all back on. Lines starting with # are skipped, so
+# put a # in front of anything you want to keep.
+#
+#   sh tune.sh <TV_IP> debloat/sony-bravia.txt
+
+# Sony's ads, store and demo apps
+com.sony.dtv.sonyselect            Sony Select: app and ad recommendations
+com.sony.dtv.promos                Promotional banners
+com.sonypicturescore               Sony Pictures Core: paid movie store
+com.sony.dtv.multiscreendemo       Store display demo mode
+com.sony.dtv.helpguidecontents     Built-in manual
+com.sony.dtv.smarthelp             Troubleshooting tips
+com.sony.dtv.ecodashboard          Energy-saving info screen
+
+# Google extras most people don't use on a TV
+com.google.android.play.games      Play Games
+com.google.android.videos          Google TV movie store
+com.google.android.apps.tv.dreamx  Ambient-mode photo screensaver (the home screen has its own)
+com.google.android.feedback        Sends crash reports to Google
+
+# Phone leftovers that do nothing on a TV
+com.android.gallery3d              Gallery
+com.android.camera2                Camera
+com.android.printspooler           Printing
+
+# Optional: frees RAM, but read what you lose. Remove the # to include.
+# com.google.android.youtube.tvmusic   YouTube Music
+# com.google.android.tts               Spoken replies to voice search (voice search still works)
+# com.google.android.apps.mediashell   Chromecast: casting from phone apps stops working
+# com.sony.dtv.airplayapp              AirPlay: casting from iPhone or Mac stops working

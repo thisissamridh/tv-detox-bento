@@ -1,79 +1,99 @@
 <div align="center">
 
-# TV Detox
+# TV Detox: Bento
 
-### Make an old, slow Android TV fast again.
+### A fast, ad-free, Apple TV-style home screen for slow Android TVs.
 
-Claude Code or Codex does the work. You just press OK on the remote.
-
-[![Release](https://img.shields.io/github/v/release/Ansub/tv-detox?color=black)](https://github.com/Ansub/tv-detox/releases/latest)
-[![Tests](https://img.shields.io/github/actions/workflow/status/Ansub/tv-detox/build.yml?branch=main&label=tests)](https://github.com/Ansub/tv-detox/actions)
-[![License](https://img.shields.io/badge/license-MIT-black)](LICENSE)
-[![YouTube](https://img.shields.io/badge/YouTube-@ansubkhan-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/@ansubkhan)
-
-<img src="docs/home-screen.png" alt="The TV Detox home screen" width="100%">
+A fork of [Ansub Khan's TV Detox](https://github.com/Ansub/tv-detox) with a bento-grid home screen, a TV-friendly web browser, a Control Center sidebar, a photo screensaver, a network ad blocker, a Mac remote, and backup and restore.
 
 </div>
 
-<table>
-<tr>
-<td width="33%" valign="top"><b>🧹 Removes the junk</b><br>Bloatware, ads and sponsored rows, gone.</td>
-<td width="33%" valign="top"><b>📺 A calm home screen</b><br>Your apps, your HDMI inputs and a clock. Nothing else.</td>
-<td width="33%" valign="top"><b>↩️ Undo anytime</b><br>Apps are turned off, never deleted.</td>
-</tr>
-</table>
+Built and tested on a 2 GB Sony BRAVIA (KD-43X75L, Google TV 14). It should work on any Android TV or Google TV that the original works on. Everything can be undone.
 
-## Watch it work
+## What you get
 
-<a href="https://www.youtube.com/watch?v=fP2SGGVsaB0"><img src="https://img.youtube.com/vi/fP2SGGVsaB0/maxresdefault.jpg" alt="Watch: Claude Made My Old Android TV Feel Brand New" width="100%"></a>
+**Home screen**
+- A bento grid that fits one screen, with no scrolling. Your most-used app gets the big tile, and the order follows how much you watched each app in the last 30 days.
+- The highlighted app's name in big type, with its artwork glowing softly behind the grid.
+- A clock and weather card, and a memory card (press OK on it to free RAM).
+- Hold OK on any tile to move it, replace it or remove it.
 
-**[▶ Claude Made My Old Android TV Feel Brand New](https://www.youtube.com/watch?v=fP2SGGVsaB0)** · the full setup on a real TV, in 4 minutes.
+**Website tiles** that open full screen in a browser made for the remote:
+- The arrows jump between the page's links and buttons with a white highlight, like a TV app. No mouse cursor (hold OK if you ever need one).
+- OK on a video player fills the screen and starts it. Back returns to the page.
+- Sites get their full desktop layout instead of the phone one.
+- Popups and redirects to other sites are blocked. Typed text goes straight into the site's search box.
+- The browser closes fully when you leave it, so its ~140 MB goes back to the TV.
+
+**Settings sidebar:** the remote's settings button opens a Control Center-style panel with Wi-Fi, Bluetooth, Picture, Sound, Inputs, an ad blocker switch, Chromecast and Speech on/off, Memory, and All settings.
+
+**Remote buttons keep working.** Turning off Google TV's home screen normally breaks the settings, Netflix, Prime and YouTube buttons on many remotes. A small key service makes them work again.
+
+**Screensaver:** Bing's photo of the day, drifting slowly, with the time, date and weather. The photo is downloaded ahead of time, so the screensaver uses almost no memory.
+
+**Ad blocker for the whole TV,** using AdGuard's free DNS. You can switch it off in the sidebar. (YouTube's own ads can't be blocked this way.)
+
+**From a Mac** (optional):
+- **TV Remote:** press Control+Option+Space anywhere and a remote pops up. Your keyboard drives the TV: arrows, Return, Esc for Back, Space to play or pause, T to type a search, 1 to 9 to open home tiles.
+- **Weekly tune-up:** once a week, while the TV is idle, it clears app caches and closes background apps.
+
+**Backup and restore:** `backup.sh` saves your tiles, the apps you turned off and your settings to a folder. `restore.sh` rebuilds the whole setup after a factory reset or on another TV.
+
+<img src="docs/sidebar.png" alt="The settings sidebar" width="100%">
 
 ## Get started
 
-**1. Turn on developer mode on the TV.**
-Settings → Device Preferences → About → press **Build** 7 times. Then turn on **USB debugging** in **Developer options**. [Stuck?](#help)
+You need a Mac or PC with `adb` (`brew install android-platform-tools` on a Mac), the TV and the computer on the same Wi-Fi, and developer mode on the TV (Settings, then About, then press **Build** 7 times, then turn on **USB debugging** in Developer options). [Stuck?](#help)
 
-**2. Open [Claude Code](https://claude.com/claude-code) or [Codex](https://openai.com/codex) on your laptop.**
-The laptop and TV must be on the same Wi-Fi.
-
-**3. Paste this in.**
-
-```text
-Help me clean up my Android TV and make it faster.
-My TV is a <brand and model>.
-
-1. Connect to my TV over Wi-Fi. Walk me through anything
-   I need to tap on the TV.
-2. Before changing anything, list every app in plain English:
-   safe to turn off, needed by the TV, and apps I use.
-   Check free memory.
-3. Ask me before every change. Turn apps off instead of
-   deleting them. Keep a list of what you changed and how
-   to undo it.
-4. Never turn off: Google Play services
-   (com.google.android.gms), Google Play, Settings,
-   System UI, setup apps, the keyboard, Bluetooth, my HDMI
-   inputs, the TV's input and tuner framework, or anything
-   else the TV needs to start. If you're not sure, leave
-   it on. The one exception: if install.sh offers to turn
-   off Google TV's setup app because it's taking over Home,
-   ask me first.
-5. Install the home screen: download
-   https://github.com/Ansub/tv-detox and run its
-   install.sh with my TV and these apps: <your apps>.
-6. Turn off animations and the screensaver, and make the TV
-   sleep after 5 minutes.
-7. Wait 30 seconds after the last change, then restart the
-   TV once and check it starts up normally before you say
-   you're done. Show me free memory before
-   and after.
+```sh
+git clone https://github.com/<you>/tv-detox && cd tv-detox
+sh build.sh                    # builds the home screen app (needs Java 17 and the Android SDK, see below)
+sh install.sh <TV_IP>          # installs it and makes it your home screen
+sh tune.sh <TV_IP> debloat/sony-bravia.txt   # the extras; each step asks first
 ```
 
-That's it. It asks you before every change.
+Find your TV's IP under Settings, then Network, then your Wi-Fi network. The first time you connect, the TV asks "Allow debugging?": tick "Always allow" and press Allow.
 
-> [!NOTE]
-> This is what worked for us, not professional advice. Use it at your own risk. You're responsible for your own TV, and I'm not liable if something goes wrong.
+`tune.sh` asks before each step: the remote button fix, the screensaver, the ad blocker, faster animations, and turning off the apps in a debloat list. Read [`debloat/sony-bravia.txt`](debloat/sony-bravia.txt) first and put a `#` in front of anything you want to keep. On other brands, ask Claude or Codex to make a list for your TV the same way. Add `COMPILE=1` to pre-compile your apps for faster launches (slow, about 20 minutes; it helped YouTube and Prime by about 30% on the test TV).
+
+Prefer to let an AI do it? Open [Claude Code](https://claude.com/claude-code) in this folder and say: *"Set up my Android TV at <TV_IP> with this repo. Ask me before every change."*
+
+### Pick your tiles
+
+Tiles are a comma-separated list of package names and websites. A website is `web:` plus its address, optionally followed by `#` and the name to show:
+
+```sh
+adb -s <TV_IP>:5555 shell am start -n com.ansub.tvhome/.MainActivity --es stamp "$(date +%s)" \
+  --es apps '"com.netflix.ninja,com.google.android.youtube.tv,web:https://example.com/home#Films"'
+```
+
+Named website tiles show the site's own icon. Apps that aren't installed are skipped. You can also add tiles on the TV: press OK on **Add app**.
+
+### The Mac remote
+
+```sh
+sh mac/install.sh <TV_IP>      # remote app (starts at login) and the weekly tune-up
+sh mac/install.sh --remove     # removes both
+```
+
+It needs Xcode's command-line tools for `swiftc` (`xcode-select --install`). The tune-up only runs while the TV is idle and your Mac is awake on the same Wi-Fi. It logs to `~/Library/Logs/tv-tune.log`.
+
+### Back up and restore
+
+```sh
+sh backup.sh <TV_IP>                       # saves to backups/<date>
+sh restore.sh <TV_IP> backups/2026-10-20   # after a reset: install your apps first, then run this
+```
+
+Backups hold no passwords or app data: just your tiles, which apps are off, and the settings `tune.sh` changes.
+
+### Undo
+
+```sh
+sh undo.sh <TV_IP>
+```
+
+This turns every app back on, puts back the settings `tune.sh` changed (ad blocker, animations, screensaver, key service), and removes the home screen. A factory reset also removes everything.
 
 ## Help
 
@@ -325,18 +345,8 @@ It's one screen of plain Java, no libraries, no Gradle. The background is drawn 
 
 </details>
 
-## Contributing
+## Credits
 
-Pull requests are welcome for fixes that keep working on every TV. This project sticks to official apps and Android's own settings, so changes that add ad blockers or unofficial apps won't be merged. If you want those, fork it and make it yours.
+Based on [TV Detox](https://github.com/Ansub/tv-detox) by **Ansub Khan** ([YouTube](https://www.youtube.com/@ansubkhan)), MIT License. This fork adds the bento home screen, the TV browser, the sidebar, the key service, the screensaver, the ad blocker, the Mac remote and tune-up, and backup and restore.
 
----
-
-<div align="center">
-
-Made by **Ansub Khan**. I build things like this with AI every week.
-
-[**Watch on YouTube →**](https://www.youtube.com/@ansubkhan)
-
-<sub>MIT License</sub>
-
-</div>
+Use it at your own risk. You're responsible for your own TV and for what you watch with it.

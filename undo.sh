@@ -56,6 +56,22 @@ if [ -n "$failed" ]; then
   echo "Kept this home screen so your TV still has one. Run undo.sh again, or turn the app on with: adb shell pm enable <package>" >&2
   exit 1
 fi
+# Put back what tune.sh changed: the key service, ad blocker DNS, animations and screensaver.
+cur=$(adb -s "$TV" shell settings get secure enabled_accessibility_services | tr -d '\r')
+rest=$(printf '%s' "$cur" | tr ':' '\n' | grep -v '^com.ansub.tvhome/' | paste -sd: -)
+if [ -n "$rest" ] && [ "$rest" != null ]; then adb -s "$TV" shell settings put secure enabled_accessibility_services "$rest"
+else adb -s "$TV" shell settings delete secure enabled_accessibility_services >/dev/null; fi
+if [ "$(adb -s "$TV" shell settings get global private_dns_specifier | tr -d '\r')" = dns.adguard-dns.com ]; then
+  adb -s "$TV" shell settings put global private_dns_mode opportunistic
+  adb -s "$TV" shell settings delete global private_dns_specifier >/dev/null
+fi
+for k in window_animation_scale transition_animation_scale animator_duration_scale; do
+  adb -s "$TV" shell settings put global $k 1.0
+done
+case "$(adb -s "$TV" shell settings get secure screensaver_components | tr -d '\r')" in
+  com.ansub.tvhome/*) adb -s "$TV" shell settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop ;;
+esac
+echo "Settings put back."
 adb -s "$TV" shell rm -f "$LIST"
 adb -s "$TV" uninstall com.ansub.tvhome >/dev/null 2>&1 || true
 adb -s "$TV" shell input keyevent KEYCODE_HOME

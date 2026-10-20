@@ -23,7 +23,9 @@ rm -rf out; mkdir -p out/classes out/dex out/gen/com/ansub/tvhome
   echo "}; }"
 } > out/gen/com/ansub/tvhome/Apps.java
 
-"$BT/aapt2" link -o out/base.apk -I "$JAR" --manifest AndroidManifest.xml --min-sdk-version 21 --target-sdk-version 34
+RES=""
+if [ -d res ]; then "$BT/aapt2" compile --dir res -o out/res.zip; RES=out/res.zip; fi
+"$BT/aapt2" link -o out/base.apk -I "$JAR" --manifest AndroidManifest.xml --min-sdk-version 21 --target-sdk-version 34 $RES
 javac -nowarn -Xlint:-options -encoding UTF-8 -source 1.8 -target 1.8 -bootclasspath "$JAR:$BT/core-lambda-stubs.jar" \
   -d out/classes $(find src out/gen -name "*.java")
 "$BT/d8" --min-api 21 --release --lib "$JAR" --output out/dex $(find out/classes -name '*.class')
