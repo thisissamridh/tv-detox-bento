@@ -1,0 +1,14 @@
+# Your home screen tiles. Copy this file to tiles.txt, edit it, then run:  sh tiles.sh <TV_IP>
+# One tile per line. Apps that aren't installed are skipped. Order doesn't matter much: the home
+# screen puts your most-watched tiles first.
+#
+# An app: its package name. Not sure what it is? Ask Claude: "What's the package name of <app>?"
+com.netflix.ninja
+com.google.android.youtube.tv
+com.amazon.amazonvideo.livingroom
+com.disney.disneyplus
+#
+# A website, opened full screen in the remote-friendly browser: web: plus its address. Add # and a
+# name to show that name with the site's own icon. Works with any streaming or video site.
+web:https://www.example.com/
+web:https://watch.example.org/home#Films

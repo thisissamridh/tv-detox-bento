@@ -34,7 +34,7 @@ Built and tested on a 2 GB Sony BRAVIA (KD-43X75L, Google TV 14). It should work
 **Ad blocker for the whole TV,** using AdGuard's free DNS. You can switch it off in the sidebar. (YouTube's own ads can't be blocked this way.)
 
 **From a Mac** (optional):
-- **TV Remote:** press Control+Option+Space anywhere and a remote pops up. Your keyboard drives the TV: arrows, Return, Esc for Back, Space to play or pause, T to type a search, 1 to 9 to open home tiles.
+- **TV Remote:** press Control+Option+Space anywhere and a remote pops up. Your keyboard (or mouse) drives the TV, including typing searches.
 - **Weekly tune-up:** once a week, while the TV is idle, it clears app caches and closes background apps.
 
 **Backup and restore:** `backup.sh` saves your tiles, the apps you turned off and your settings to a folder. `restore.sh` rebuilds the whole setup after a factory reset or on another TV.
@@ -50,6 +50,7 @@ git clone https://github.com/<you>/tv-detox && cd tv-detox
 sh build.sh                    # builds the home screen app (needs Java 17 and the Android SDK, see below)
 sh install.sh <TV_IP>          # installs it and makes it your home screen
 sh tune.sh <TV_IP> debloat/sony-bravia.txt   # the extras; each step asks first
+sh tiles.sh <TV_IP>            # your apps and websites (see "Pick your tiles")
 ```
 
 Find your TV's IP under Settings, then Network, then your Wi-Fi network. The first time you connect, the TV asks "Allow debugging?": tick "Always allow" and press Allow.
@@ -60,16 +61,31 @@ Prefer to let an AI do it? Open [Claude Code](https://claude.com/claude-code) in
 
 ### Pick your tiles
 
-Tiles are a comma-separated list of package names and websites. A website is `web:` plus its address, optionally followed by `#` and the name to show:
-
 ```sh
-adb -s <TV_IP>:5555 shell am start -n com.ansub.tvhome/.MainActivity --es stamp "$(date +%s)" \
-  --es apps '"com.netflix.ninja,com.google.android.youtube.tv,web:https://example.com/home#Films"'
+cp tiles.example.txt tiles.txt   # edit it: one app or website per line
+sh tiles.sh <TV_IP>
 ```
 
-Named website tiles show the site's own icon. Apps that aren't installed are skipped. You can also add tiles on the TV: press OK on **Add app**.
+A tile is an app's package name, or `web:` plus any website's address, which opens full screen in the remote-friendly browser. Add `#` and a name (`web:https://example.com/home#Films`) to show that name with the site's own icon. Apps that aren't installed are skipped. `tiles.txt` is in `.gitignore`, so your list stays on your computer. You can also add tiles on the TV: press OK on **Add app**.
 
 ### The Mac remote
+
+<img src="docs/mac-remote.png" alt="The Mac remote" width="300" align="right">
+
+Press **Control+Option+Space** anywhere on your Mac. Every button shows its key, and lights up as you press it; you can also click them.
+
+| Key | Does |
+|---|---|
+| Arrows, Return | Move, OK |
+| Esc or Delete | Back |
+| H, G | Home, settings sidebar |
+| Space, [ ] | Play or pause, rewind, forward |
+| + − M | Volume, mute |
+| O | TV on or off |
+| T | Type a search: it goes into the TV's search box |
+| 1 to 9 | Open home tile 1 to 9 (1 is the big one) |
+
+<br clear="right">
 
 ```sh
 sh mac/install.sh <TV_IP>      # remote app (starts at login) and the weekly tune-up
@@ -246,7 +262,7 @@ Your list has one change per line, like `off com.example.app`, `global window_an
 <summary><b>Can I install the home screen without AI?</b></summary>
 <br>
 
-Yes. You only need `adb`. On a Mac, run `brew install android-platform-tools`. On Windows, download Google's [SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools), unzip it, and run the commands below from Git Bash. Download this repo, then:
+Yes. You need `adb`, plus Java 17 and the Android SDK to build the app the first time (see "For developers: build it yourself" below; `install.sh` builds it for you). On a Mac, run `brew install android-platform-tools`. On Windows, download Google's [SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools), unzip it, and run the commands below from Git Bash. Download this repo, then:
 
 ```sh
 sh install.sh <TV_IP>                                               # picks your TV apps for you

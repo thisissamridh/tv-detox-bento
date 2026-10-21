@@ -22,7 +22,7 @@ if [ "${1:-}" = "--remove" ]; then
   echo "Removed TV Remote and the weekly tune-up."; exit 0
 fi
 
-swiftc -O TVRemote.swift -o TVRemote
+swiftc -O -swift-version 5 TVRemote.swift -o TVRemote
 mkdir -p "$APP/Contents/MacOS" "$HOME/.tv-tune" "$AGENTS"
 cp TVRemote "$APP/Contents/MacOS/TVRemote"
 cat > "$APP/Contents/Info.plist" <<EOF
