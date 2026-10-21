@@ -46,7 +46,7 @@ Built and tested on a 2 GB Sony BRAVIA (KD-43X75L, Google TV 14). It should work
 You need a Mac or PC with `adb` (`brew install android-platform-tools` on a Mac), the TV and the computer on the same Wi-Fi, and developer mode on the TV (Settings, then About, then press **Build** 7 times, then turn on **USB debugging** in Developer options). [Stuck?](#help)
 
 ```sh
-git clone https://github.com/<you>/tv-detox && cd tv-detox
+git clone https://github.com/thisissamridh/tv-detox-bento && cd tv-detox-bento
 sh build.sh                    # builds the home screen app (needs Java 17 and the Android SDK, see below)
 sh install.sh <TV_IP>          # installs it and makes it your home screen
 sh tune.sh <TV_IP> debloat/sony-bravia.txt   # the extras; each step asks first
